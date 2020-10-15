@@ -12,6 +12,10 @@ module Lark
       def ephemeral_send(payload)
         post 'ephemeral/v1/send/', payload
       end
+
+      def urgent(payload)
+        post 'message/v4/urgent/', payload
+      end
     end
   end
 end
