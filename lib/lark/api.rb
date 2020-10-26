@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'lark/request'
 
 module Lark
@@ -17,13 +19,14 @@ module Lark
     api_mount :mina
     api_mount :notify
     api_mount :interactive
+    api_mount :search
     api_mount :'drive/file'
     api_mount :'drive/folder'
     api_mount :'drive/platform'
 
     attr_reader :app_id, :app_secret, :tenant_key, :isv, :options
 
-    def initialize options={}
+    def initialize(options = {})
       @app_id = options.delete(:app_id) || Lark.config.default_app_id
       @app_secret = options.delete(:app_secret) || Lark.config.default_app_secret
       raise AppNotConfigException if @app_id.nil? || @app_id.empty?
@@ -41,25 +44,25 @@ module Lark
       @request ||= Lark::Request.new(false)
     end
 
-    def get(path, headers={})
+    def get(path, headers = {})
       with_token(headers) do |headers|
         request.get path, headers
       end
     end
 
-    def post(path, payload, headers={})
+    def post(path, payload, headers = {})
       with_token(headers) do |headers|
         request.post path, payload, headers
       end
     end
 
-    def post_file(path, file, headers={})
+    def post_file(path, file, headers = {})
       with_token(headers) do |headers|
         request.post_file path, file, headers
       end
     end
 
-    def app_ticket= ticket
+    def app_ticket=(ticket)
       Lark.redis.set "APP_TICKET_#{app_id}", ticket
     end
 
@@ -91,7 +94,7 @@ module Lark
       @tenant_token_store = klass.new(self)
     end
 
-    def with_token(headers, tries=2)
+    def with_token(headers, tries = 2)
       token = headers[:access_token]
       if token.nil?
         via = headers[:via] || 'tenant'
