@@ -27,7 +27,7 @@ module Lark
       def add_bot_to_chat_by_user(user_access_token:, chat_id:, member_ids:)
         return if member_ids.blank?
 
-        post "im/v1/chats/#{chat_id}/members", { "id_list": member_ids }, { access_token: user_access_token }
+        post "im/v1/chats/#{chat_id}/members?member_id_type=app_id", { "id_list": member_ids }, { access_token: user_access_token }
       end
     end
   end
