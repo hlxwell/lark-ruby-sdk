@@ -47,29 +47,18 @@ module Lark
     end
 
     def get(path, headers = {})
-<<<<<<< HEAD
       with_token(headers) do |headers_with_token|
         request.get path, headers_with_token
-=======
-      with_token(headers) do |headers|
-        request.get path, headers
->>>>>>> hlxwell/master
       end
     end
 
     def post(path, payload, headers = {})
-<<<<<<< HEAD
       with_token(headers) do |headers_with_token|
         request.post path, payload, headers_with_token
-=======
-      with_token(headers) do |headers|
-        request.post path, payload, headers
->>>>>>> hlxwell/master
       end
     end
 
     def post_file(path, file, headers = {})
-<<<<<<< HEAD
       with_token(headers) do |headers_with_token|
         request.post_file path, file, headers_with_token
       end
@@ -77,15 +66,6 @@ module Lark
 
     def app_ticket=(new_ticket)
       Lark.redis.set "APP_TICKET_#{app_id}", new_ticket
-=======
-      with_token(headers) do |headers|
-        request.post_file path, file, headers
-      end
-    end
-
-    def app_ticket=(ticket)
-      Lark.redis.set "APP_TICKET_#{app_id}", ticket
->>>>>>> hlxwell/master
     end
 
     def app_ticket
