@@ -21,6 +21,7 @@ module Lark
     api_mount :notify
     api_mount :interactive
     api_mount :search
+    api_mount :im
     api_mount :'drive/file'
     api_mount :'drive/folder'
     api_mount :'drive/platform'
