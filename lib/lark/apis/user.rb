@@ -11,6 +11,14 @@ module Lark
         }.compact
       end
 
+      def info(open_id:)
+        get 'user/v4/info', {
+          params: {
+            open_id: open_id
+          }
+        }.compact
+      end
+
       def batch_get_id(emails: nil, mobiles: nil)
         get 'user/v1/batch_get_id', params: {
           emails: emails,
