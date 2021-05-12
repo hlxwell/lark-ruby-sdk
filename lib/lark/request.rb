@@ -1,4 +1,4 @@
-require 'http'
+require "http"
 
 module Lark
   class Request
@@ -7,7 +7,7 @@ module Lark
     def initialize(skip_verify_ssl = true)
       @http = HTTP.timeout(**Lark.http_timeout_options)
       @ssl_context = OpenSSL::SSL::SSLContext.new
-      @ssl_context.ssl_version = :TLSv1
+      # @ssl_context.ssl_version = :TLSv1
       @ssl_context.verify_mode = OpenSSL::SSL::VERIFY_NONE if skip_verify_ssl
     end
 
@@ -17,6 +17,7 @@ module Lark
         http.headers(header).get(url, params: params, ssl_context: ssl_context)
       end
     end
+
     alias delete get
 
     def post(path, post_body, post_header = {})
@@ -35,9 +36,9 @@ module Lark
           params: params,
           form: {
             media: HTTP::FormData::File.new(file),
-            hack: 'X'
+            hack: "X",
           }, # Existing here for http-form_data 1.0.1 handle single param improperly
-          ssl_context: ssl_context
+          ssl_context: ssl_context,
         )
       end
     end
@@ -48,7 +49,7 @@ module Lark
       url = URI.join(API_BASE_URL, path)
       Lark.logger.info "request url(#{url}) with headers: #{header}"
       as = header.delete(:as)
-      header['Accept'] = 'application/json'
+      header["Accept"] = "application/json"
       response = yield(url, header)
       unless response.status.success?
         Lark.logger.error "request #{url} happen error: #{response.body}"
@@ -61,7 +62,7 @@ module Lark
       content_type = response.headers[:content_type]
       parse_as = {
         %r{^application\/json} => :json,
-        %r{^image\/.*} => :file
+        %r{^image\/.*} => :file,
       }.each_with_object([]) { |match, memo| memo << match[1] if content_type =~ match[0] }.first || as || :text
 
       body = response.body
@@ -85,7 +86,7 @@ module Lark
     end
 
     def parse_as_file(body)
-      file = Tempfile.new('tmp')
+      file = Tempfile.new("tmp")
       file.binmode
       file.write(body)
       file.close
@@ -98,7 +99,7 @@ module Lark
     attr_reader :code, :data
 
     def initialize(data)
-      @code = data['code'].to_i
+      @code = data["code"].to_i
       @data = data
     end
 
